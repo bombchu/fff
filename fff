@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ "$1" = "a" ]  
+then MYusername="ec2-user"
+elif [ "$1" = "aa" ]
+then MYusername="ec2-user"
+elif [ "$1" = "c" ]
+then MYusername="centos"
+elif [ "$1" = "r" ]
+then MYusername="ec2-user"
+elif [ "$1" = "u16" ]
+then MYusername="ubuntu"
+elif [ "$1" = "u18" ]
+then MYusername="ubuntu"
+elif [ "$1" = "u20" ]
+then MYusername="ubuntu"
+elif [ "$1" = "u" ]
+then MYusername="ubuntu"
+else
+    MYusername="u"
+fi
+
+ssh -i ~/pems/ec2key-201907-real.pem -l $MYusername $(aws ec2 describe-instances --filter "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*][Tags[?Key=='Name'].Value[],NetworkInterfaces[0].Association.PublicIp]" --output text | tail -n 1)
